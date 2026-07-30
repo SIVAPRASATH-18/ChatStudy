@@ -73,6 +73,84 @@ Client-server chat applications are versatile tools that facilitate real-time co
 
 Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
 
+## PROGRAM
+
+SERVER_CHAT.py
+
+```
+import socket
+
+# Create socket
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+host = "127.0.0.1"
+port = 12345
+
+# Bind and listen
+server.bind((host, port))
+server.listen(1)
+
+print("Server waiting for connection...")
+
+conn, addr = server.accept()
+print("Connected to:", addr)
+
+while True:
+    # Receive message from client
+    client_msg = conn.recv(1024).decode()
+    print("Client:", client_msg)
+
+    if client_msg.lower() == "exit":
+        break
+
+    # Send message to client
+    msg = input("Server: ")
+    conn.send(msg.encode())
+
+    if msg.lower() == "exit":
+        break
+
+conn.close()
+server.close()
+```
+
+CLIENT_CHAT.py
+
+```
+import socket
+
+# Create socket
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+host = "127.0.0.1"
+port = 12345
+
+# Connect to server
+client.connect((host, port))
+
+while True:
+    # Send message to server
+    msg = input("Client: ")
+    client.send(msg.encode())
+
+    if msg.lower() == "exit":
+        break
+
+    # Receive reply from server
+    server_msg = client.recv(1024).decode()
+    print("Server:", server_msg)
+
+    if server_msg.lower() == "exit":
+        break
+
+client.close()
+```
+
+## OUTPUT
+
+<img width="1350" height="370" alt="Screenshot 2026-07-30 132839" src="https://github.com/user-attachments/assets/8f0d48a8-322e-4bfd-b4a9-ee9fcd80b6f6" />
+
+<img width="1478" height="302" alt="Screenshot 2026-07-30 132856" src="https://github.com/user-attachments/assets/3797313b-c0a8-4e75-9960-bc0e789608da" />
 
 ## Result:
 
